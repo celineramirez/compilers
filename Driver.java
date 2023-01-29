@@ -5,7 +5,6 @@ public class Driver {
     public static void main (String args[]) {
     	
     	// initialize token input stream
-//        CharStream input = CharStreams.FromStream(System.in);
     	ANTLRInputStream input = new ANTLRInputStream(System.in);
 
         // initialize lexer
@@ -14,17 +13,14 @@ public class Driver {
         // intialize token buffer
         CommonTokenStream token = new CommonTokenStream(lexer);
         
-        /* getAllTokens() returns array list of all tokens in buffer
-         * For loop iterates through list and prints each token
-         * -INCOMPLETE-
-         */
-        for (int i = 0; i < getAllTokens().size(); i++) {
-        	
-        	//get token at i and print type and value
-//        	System.out.println("TOKEN:" + getAllTokens().getText() + "\n Value:" getAllTokens(i).value());
-        	
-        	System.out.println(getAllTokens().get(i)+ "\n");
+        // print tokens (incomplete)
+        while(token.hasMoreTokens()) {
+        	System.out.println(token.nextToken());
         }
+        
+//      System.out.println("TOKEN:" + getAllTokens().getText() + "\n Value:" getAllTokens(i).value());
+//      System.out.println(getAllTokens().get(i)+ "\n");
+
 
     }
 }
