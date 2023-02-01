@@ -5,6 +5,8 @@ import java.io.*;
 public class Driver {
     public static void main (String args[]) {
 
+        int type = 0;
+
         try {
             // initialize token input stream
             ANTLRInputStream input = new ANTLRInputStream(System.in);
@@ -18,7 +20,38 @@ public class Driver {
                     break;
                 }
 
-                System.out.println("TOKEN:" + token.getType() + "\n Value:" + token.getText());
+                type = token.getType();
+
+                System.out.print("Token Type: ");
+                switch(type) {
+                    case 1:
+                        System.out.println("KEYWORDS");
+                        break;
+                    case 2:
+                        System.out.println("IDENTIFIER");
+                        break;
+                    case 3:
+                        System.out.println("INTLITERAL");
+                        break;
+                    case 4:
+                        System.out.println("FLOATLITERAL");
+                        break;
+                    case 5:
+                        System.out.println("STRINGLITERAL");
+                        break;
+                    case 6:
+                        System.out.println("COMMENT");
+                        break;
+                    case 7:
+                        System.out.println("OPERATORS");
+                        break;
+                    case 8:
+                        System.out.println("WS");
+                        break;
+                    default:
+                        break;
+                }
+                System.out.println("Value:" + token.getText());
             }
         }
         catch(IOException e) {
