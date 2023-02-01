@@ -51,7 +51,7 @@ public class Driver {
                     default:
                         break;
                 }
-                System.out.println("Value:" + token.getText());
+                System.out.println("Value: " + token.getText());
             }
         }
         catch(IOException e) {
