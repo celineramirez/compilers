@@ -52,6 +52,10 @@ public class Driver {
                         break;
                 }
                 System.out.println("Value: " + token.getText());
+                
+                Little parser = new (token);
+                ParseTree tree = parser.init();
+                System.out.println(tree.toStringTree(parser));
             }
         }
         catch(IOException e) {
