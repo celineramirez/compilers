@@ -51,11 +51,21 @@ public class Driver {
                     default:
                         break;
                 }
+
+                type = 0;
                 System.out.println("Value: " + token.getText());
-                
-                Little parser = new (token);
-                ParseTree tree = parser.init();
+
+                Little parser = new Little(token);
+                ParseTree tree;
                 System.out.println(tree.toStringTree(parser));
+
+                while(tree.getChild(token) != null) {
+                    switch(type){
+
+                        case 1:
+                            
+
+                }
             }
         }
         catch(IOException e) {
