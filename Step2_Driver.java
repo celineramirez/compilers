@@ -5,8 +5,6 @@ import java.io.*;
 public class Driver {
     public static void main (String args[]) {
 
-        int type = 0;
-
         try {
             // initialize token input stream
             ANTLRInputStream input = new ANTLRInputStream(System.in);
