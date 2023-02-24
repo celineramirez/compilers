@@ -8,14 +8,7 @@ public class Driver {
         try {
             // initialize token input stream
             ANTLRInputStream input = new ANTLRInputStream(System.in);
-
-            System.out.println(matchInput(input));
-            if (matchInput(input)) {
-                System.out.println("Accepted");
-            } else {
-                System.out.println("Not accepted");
-            }
-
+            matchInput(input);
         }
         catch(IOException e) {
             e.printStackTrace();
@@ -23,22 +16,24 @@ public class Driver {
 
     }// end main
 
-    public static boolean matchInput(CharStream input){
+    public static void matchInput(CharStream input){
 
-        try{
-            // initialize lexer and parser
-            LittleLexer lexer = new LittleLexer(input);
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-            LittleParser parser = new LittleParser(tokens);
+        // initialize lexer and parser
+        LittleLexer lexer = new LittleLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        LittleParser parser = new LittleParser(tokens);
 
-            parser.program();
-            return true;
+        parser.program();
+        parser.removeErrorListeners();
+
+        int num_errs = parser.getNumberOfSyntaxErrors();
+
+        if(num_errs==0) {
+            System.out.println("Accepted");
         }
-
-        catch(RecognitionException e){
-            return false;
+        else {
+            System.out.println("Not accepted");
         }
-
     }// end matchInput
 
 }// end Driver
