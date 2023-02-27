@@ -14,6 +14,12 @@ public class Driver {
             e.printStackTrace();
         }
 
+        ParseTree tree = new parser.program();
+        ParseTreeWalker ptw = new ParseTreeWalker();
+        SimpleTableBuilder stb = new SimpleTableBuilder();
+        LittleBaseListener listener = new LittleBaseListener();
+        ptw.walk(stb,tree);
+        stb.prettyPrint();
     }// end main
 
     public static void matchInput(CharStream input){
