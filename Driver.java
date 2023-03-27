@@ -5,41 +5,27 @@ import java.io.*;
 public class Driver {
     public static void main (String args[]) {
 
+        ANTLRInputStream input = null;
         try {
             // initialize token input stream
-            ANTLRInputStream input = new ANTLRInputStream(System.in);
-            matchInput(input);
-        }
-        catch(IOException e) {
+            input = new ANTLRInputStream(System.in);
+//            matchInput(input);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
-        ParseTree tree = new parser.program();
-        ParseTreeWalker ptw = new ParseTreeWalker();
-        SimpleTableBuilder stb = new SimpleTableBuilder();
-        LittleBaseListener listener = new LittleBaseListener();
-        ptw.walk(stb,tree);
-        stb.prettyPrint();
-    }// end main
-
-    public static void matchInput(CharStream input){
 
         // initialize lexer and parser
         LittleLexer lexer = new LittleLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         LittleParser parser = new LittleParser(tokens);
 
-        parser.program();
-        parser.removeErrorListeners();
+        ParseTree tree = new parser.program();
+        ParseTreeWalker ptw = new ParseTreeWalker();
+        SimpleTableBuilder stb = new SimpleTableBuilder();
+        ptw.walk(stb, tree);
 
-        int num_errs = parser.getNumberOfSyntaxErrors();
+        stb.prettyPrint();
 
-        if(num_errs==0) {
-            System.out.println("Accepted");
-        }
-        else {
-            System.out.println("Not accepted");
-        }
-    }// end matchInput
+    }// end main
 
 }// end Driver
