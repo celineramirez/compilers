@@ -7,7 +7,7 @@ public class SimpleTableBuilder extends LittleBaseListener{
     ArrayList<String> stringslist = new ArrayList<>();
 
     int i = 0;
-    @Override
+
         public void enterProgram(LittleParser.ProgramContext ctx) {
         //1.Make a new symbol table for global
 
@@ -19,30 +19,30 @@ public class SimpleTableBuilder extends LittleBaseListener{
             //3. push it to the "scope stack"
             scopeStack.push(hMap);
         }
-
-        @Override
+        
         public void enterStmt(LittleParser.StmtContext ctx) {
             i++;
 
             HashMap<String, Integer> blockhash = new HashMap<>();
             blockhash.put("Block", i);
-
+            tableList.add(hMap);
         }
 
-        @Override
+        
         public void enterFunc_decl(LittleParser.Func_declarationsContext ctx) {
-            String type = ctx.any_type().getText();
-            String name = ctx.id().getText();
+            String type = ctx.func_decl().any_type().getText();
+            String name = ctx.func_decl().id().getText();
 
             hMap.put(name, stringslist);
-            
-
+            tableList.add(hMap);
         }
+
+
 
         @Override
         public void enterVar_decl(LittleParser.Var_declContext ctx) {
 
-            String name = ctx.id().getText();
+            String name = ctx.id_list().getText();
             String type = ctx.var_type().getText();
             System.out.println(name + ", " + type);
 
@@ -50,6 +50,7 @@ public class SimpleTableBuilder extends LittleBaseListener{
             stringslist.add(type);
 
             hMap.put(name, stringslist);
+            tableList.add(hMap);
         }
 
         @Override
@@ -69,7 +70,8 @@ public class SimpleTableBuilder extends LittleBaseListener{
             stringslist.add(value);
 
             // add entry to hashmap
-            hMap.put(ctx.func_decl().getText, stringslist);
+            hMap.put(name, stringslist);
+            tableList.add(hMap);
 
         }
 
@@ -79,12 +81,13 @@ public class SimpleTableBuilder extends LittleBaseListener{
 
 //            for (String name: hMap.keySet()) {
 //                String key = name.toString();
-//                String type = hMap.get(type).toString();
-//                String value = hMap.get(value).toString();
+//                String type = hMap.get(name).toString();
+//                String value = hMap.get(name).toString();
 //                System.out.println("Symbol Table: " + key
 //                        + "\nname " + name + "type " + type + "value " + value);
 //            }
 
+            System.out.println(tableList);
 
 //            for (String keys : hMap.keySet())
 //            {
