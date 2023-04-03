@@ -96,7 +96,16 @@ public class SimpleTableBuilder extends LittleBaseListener{
 //                        + "\nname " + name + "type " + type + "value " + value);
 //            }
 
-            System.out.println(tableList);
+            //System.out.println(tableList);
+
+            for (int i=0; i<tableList.size(); i++) {
+                HashMap<String,ArrayList> curr = tableList.get(i);
+
+//                System.out.println(curr);
+                curr.entrySet().forEach(entry->{
+                    System.out.println(entry.getKey() + " = " + entry.getValue());
+                });
+            }
 
 //            for (String keys : hMap.keySet())
 //            {
