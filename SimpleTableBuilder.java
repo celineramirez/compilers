@@ -2,7 +2,7 @@ import java.util.*;
 
 public class SimpleTableBuilder extends LittleBaseListener{
     HashMap<String, ArrayList> hMap = new HashMap();
-    ArrayList<HashMap<String, ArrayList>> tableList = new ArrayList();
+    ArrayList<HashMap> tableList = new ArrayList();
     Stack<HashMap<String, ArrayList>> scopeStack = new Stack();
     ArrayList<String> stringslist = new ArrayList<>();
 
@@ -10,33 +10,42 @@ public class SimpleTableBuilder extends LittleBaseListener{
 
         public void enterProgram(LittleParser.ProgramContext ctx) {
         //1.Make a new symbol table for global
+            String name = ctx.id().getText();
+            String type = ctx.id().getText();
+            System.out.println(name+", "+type);
 
-
-        // ?need list and stack??
             //2. add it to the list of symbol tables
             tableList.add(hMap);
 
             //3. push it to the "scope stack"
             scopeStack.push(hMap);
+
+            stringslist.add(name);
+            stringslist.add(type);
+
+            hMap.put("GLOBAL", stringslist);
+            tableList.add(hMap);
         }
-        
+
         public void enterStmt(LittleParser.StmtContext ctx) {
             i++;
 
             HashMap<String, Integer> blockhash = new HashMap<>();
             blockhash.put("Block", i);
-            tableList.add(hMap);
+            tableList.add(blockhash);
         }
 
-        
+
         public void enterFunc_decl(LittleParser.Func_declarationsContext ctx) {
             String type = ctx.func_decl().any_type().getText();
             String name = ctx.func_decl().id().getText();
 
+            stringslist.add(name);
+            stringslist.add(type);
+
             hMap.put(name, stringslist);
             tableList.add(hMap);
         }
-
 
 
         @Override
