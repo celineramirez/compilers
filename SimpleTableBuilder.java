@@ -1,11 +1,8 @@
 import java.util.*;
 
 public class SimpleTableBuilder extends LittleBaseListener{
-    HashMap<String, ArrayList> hMap = new HashMap();
     ArrayList<HashMap> tableList = new ArrayList();
     Stack<HashMap> scopeStack = new Stack();
-    ArrayList<String> stringslist = new ArrayList<>();
-
     private int i = 0;
 
         public void enterProgram(LittleParser.ProgramContext ctx) {
@@ -20,13 +17,30 @@ public class SimpleTableBuilder extends LittleBaseListener{
             scopeStack.push(GlobalTable);
         }
 
-//        public void enterStmt(LittleParser.StmtContext ctx) {
-//            i++;
-//
-//            HashMap<String, Integer> blockhash = new HashMap<>();
-//            blockhash.put("Block", i);
-//            tableList.add(blockhash);
-//        }
+    @Override public void enterIf_stmt(LittleParser.If_stmtContext ctx) {
+            i++;
+            HashMap<String, String> blockhash = new HashMap<>();
+
+            blockhash.put("Symbol table ", "BLOCK " + i);
+            tableList.add(blockhash);
+        }
+
+    @Override public void enterElse_part(LittleParser.Else_partContext ctx) {
+        HashMap<String, String> blockhash2 = new HashMap<>();
+
+        if(ctx.stmt_list() != null){
+            i++;
+            blockhash2.put("Symbol table ", "BLOCK " + i);
+            tableList.add(blockhash2);
+        }
+    }
+
+    @Override public void enterWhile_stmt(LittleParser.While_stmtContext ctx) {
+        i++;
+        HashMap<String, String> blockhash = new HashMap<>();
+        blockhash.put("Symbol table ", "BLOCK " + i);
+        tableList.add(blockhash);
+    }
 
         @Override
         public void enterFunc_decl(LittleParser.Func_declContext ctx) {
@@ -38,6 +52,17 @@ public class SimpleTableBuilder extends LittleBaseListener{
             tableList.add(FuncTable);
         }
 
+        @Override
+        public void enterParam_decl(LittleParser.Param_declContext ctx) {
+            String type = ctx.var_type().getText();
+            String name = ctx.id().getText();
+
+            HashMap<String, String> paramTable = new HashMap();
+
+            paramTable.put("name " + name, "type " + type);
+            tableList.add(paramTable);
+
+        }
 
         @Override
         public void enterVar_decl(LittleParser.Var_declContext ctx) {
@@ -49,7 +74,6 @@ public class SimpleTableBuilder extends LittleBaseListener{
                 String type = "type " + ctx.var_type().getText();
                 //System.out.println("print " + name + ", " + type);
 
-
                 HashMap<String, String> VarTable = new HashMap();
 
                 VarTable.put("name " + id, type);
@@ -57,27 +81,24 @@ public class SimpleTableBuilder extends LittleBaseListener{
             }
         }
 
-        //@Override
-//        public void enterString_decl(LittleParser.String_declContext ctx) {
-//
-//            //1.extract the name, type, and value
-//            String name = ctx.id().getText();
-//            String type = "STRING";
-//            String value = ctx.str().getText();
-//            //System.out.println(name+", "+type+", "+value);
-//
-//            //2. create a new symbol table entry using the above info and insert to the table at the top of the stack
-//
-//            // add entry to array list object
-//            stringslist.add(name);
-//            stringslist.add(type);
-//            stringslist.add(value);
-//
-//            // add entry to hashmap
-//            hMap.put(name, stringslist);
-//            tableList.add(hMap);
-//
-//        }
+        @Override
+        public void enterString_decl(LittleParser.String_declContext ctx) {
+
+            //1.extract the name, type, and value
+            String name = ctx.id().getText();
+            String type = "STRING";
+            String value = ctx.str().getText();
+            //System.out.println(name+", "+type+", "+value);
+
+            //2. create a new symbol table entry using the above info and insert to the table at the top of the stack
+
+            HashMap<String, String> StringTable = new HashMap();
+
+            // add entry to hashmap
+            StringTable.put("name " + name, "type " + type + " value "+ value);
+            tableList.add(StringTable);
+
+        }
 
         public void prettyPrint(){
             //print all symbol tables in the order they were created
