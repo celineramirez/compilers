@@ -11,6 +11,10 @@ public class AbstractSyntaxTree {
             this.left = null;
             this.right = null;
         }
+
+        public void printNode() {
+            System.out.printf(data);
+        }
     }
 
     public AbstractSyntaxTree() {
@@ -39,6 +43,18 @@ public class AbstractSyntaxTree {
         traverseInOrder(root);
     }
 
+    private void postOrder(Node localRoot) { // LRN
+
+        if (localRoot != null) {
+            postOrder(localRoot.left);
+            postOrder(localRoot.right);
+            localRoot.printNode();
+        }
+    }
+
+    public void printPostorder() {
+        postOrder(root);
+    }
     private void traverseInOrder(Node node) {
         if (node != null) {
             traverseInOrder(node.left);
