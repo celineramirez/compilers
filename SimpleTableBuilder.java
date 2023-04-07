@@ -9,38 +9,57 @@ public class SimpleTableBuilder extends LittleBaseListener{
 
     //step 4 generating IR
 
-    @Override public void enterExpr(LittleParser.ExprContext ctx) {
-        String intval = ctx.factor().postfix_expr().primary().INTLITERAL().getText();
+//    @Override public void enterExpr(LittleParser.ExprContext ctx) {
+//        String val = ctx.factor().postfix_expr().primary().getText();
+//
+//    }
 
 
+    @Override public void enterPrimary(LittleParser.PrimaryContext ctx) {
+        String val = ctx.getText();
+        String intval, floatval = null;
+        String op = null;
 
-    }
-
-    @Override public void enterPrimary(LittleParser.PrimaryContext ctx) { }
-
-    @Override public void enterAddop(LittleParser.AddopContext ctx) {
-        String op = ctx.getText();
-        System.out.println(op);
-
-        switch(op) {
-            case "+":
-                ast.insert(" + ");
-            case "-":
-                ast.insert(" - ");
+        if (ctx.INTLITERAL() != null) {
+            intval = ctx.getText();
+            ast.insert(intval);
         }
-    }
-
-    @Override public void enterMulop(LittleParser.MulopContext ctx) {
-        String op = ctx.getText();
-        System.out.println(op);
-
-        switch(op) {
-            case"*":
-                ast.insert("*");
-            case"/":
-                ast.insert("/");
-
+        else if (ctx.FLOATLITERAL() != null) {
+            floatval = ctx.getText();
+            ast.insert(floatval);
         }
+        else if (val.compareTo("(")==0) {
+
+            if(!ctx.expr().expr_prefix().addop().isEmpty()){
+                op = ctx.expr().expr_prefix().addop().getText();
+            }
+            else if (!ctx.expr().factor().factor_prefix().mulop().isEmpty()){
+                op = ctx.expr().factor().factor_prefix().mulop().getText();
+            }
+
+            switch(op) {
+                case "+":
+                    ast.insert("ADDI ");
+                case "-":
+                    ast.insert("SUBI ");
+                case"*":
+                    ast.insert("MULTI ");
+                case"/":
+                    ast.insert("DIVI ");
+
+                default:
+                    System.out.println("null value");
+            }
+
+            if (ctx.INTLITERAL() != null) {
+                intval = ctx.getText();
+                ast.insert(intval);
+            } else if (ctx.FLOATLITERAL() != null) {
+                floatval = ctx.getText();
+                ast.insert(floatval);
+            }
+        }
+
     }
 
     @Override public void enterAssign_stmt(LittleParser.Assign_stmtContext ctx) {
