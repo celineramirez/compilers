@@ -19,9 +19,13 @@ public class Driver {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         LittleParser parser = new LittleParser(tokens);
 
-        ParseTree tree = new parser.program();
+        ParseTree tree = parser.program();
         ParseTreeWalker ptw = new ParseTreeWalker();
         SimpleTableBuilder stb = new SimpleTableBuilder();
+
+        AbstractSyntaxTree as = new AbstractSyntaxTree();
+        as.printPostorder();
+
         ptw.walk(stb, tree);
 
         stb.prettyPrint();
