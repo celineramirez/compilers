@@ -3,9 +3,51 @@ import java.util.*;
 public class SimpleTableBuilder extends LittleBaseListener{
     ArrayList<HashMap> tableList = new ArrayList();
     Stack<HashMap> scopeStack = new Stack();
+
+    AbstractSyntaxTree ast = new AbstractSyntaxTree();
     private int i = 0;
 
-        public void enterProgram(LittleParser.ProgramContext ctx) {
+    //step 4 generating IR
+
+    @Override public void enterExpr(LittleParser.ExprContext ctx) {
+        String intval = ctx.factor().postfix_expr().primary().INTLITERAL().getText();
+
+
+
+    }
+
+    @Override public void enterPrimary(LittleParser.PrimaryContext ctx) { }
+
+    @Override public void enterAddop(LittleParser.AddopContext ctx) {
+        String op = ctx.getText();
+        System.out.println(op);
+
+        switch(op) {
+            case "+":
+                ast.insert(" + ");
+            case "-":
+                ast.insert(" - ");
+        }
+    }
+
+    @Override public void enterMulop(LittleParser.MulopContext ctx) {
+        String op = ctx.getText();
+        System.out.println(op);
+
+        switch(op) {
+            case"*":
+                ast.insert("*");
+            case"/":
+                ast.insert("/");
+
+        }
+    }
+
+    @Override public void enterAssign_stmt(LittleParser.Assign_stmtContext ctx) {
+
+    }
+
+    public void enterProgram(LittleParser.ProgramContext ctx) {
             // 1.Make a new symbol table for global
             // 2. add it to the list of symbol tables
             // 3. push it to the "scope stack"
