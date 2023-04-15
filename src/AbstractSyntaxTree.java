@@ -1,10 +1,10 @@
 public class AbstractSyntaxTree {
-    private Node root;
+    public Node root;
 
-    private class Node {
-        private String data;
-        private Node left;
-        private Node right;
+    public class Node {
+        public String data;
+        public Node left;
+        public Node right;
 
         public Node(String data) {
             this.data = data;

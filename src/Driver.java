@@ -9,7 +9,6 @@ public class Driver {
         try {
             // initialize token input stream
             input = new ANTLRInputStream(System.in);
-//            matchInput(input);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -22,9 +21,6 @@ public class Driver {
         ParseTree tree = parser.program();
         ParseTreeWalker ptw = new ParseTreeWalker();
         SimpleTableBuilder stb = new SimpleTableBuilder();
-
-        AbstractSyntaxTree as = new AbstractSyntaxTree();
-        as.printPostorder();
 
         ptw.walk(stb, tree);
 
