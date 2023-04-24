@@ -208,8 +208,6 @@ public class SimpleTableBuilder extends LittleBaseListener {
 
                 case "/":
 
-                    String reg;
-                    int regc = reg_count;
                     String store = null;
                     op_code = ";DIV" + t;
                     String store_code = ";STORE" + t;
@@ -229,9 +227,7 @@ public class SimpleTableBuilder extends LittleBaseListener {
                     //else continue
                     if (isLit()) {
 
-//                        store = store_code + register + " " + arith_val +
-//                                "\n" + op_code + " " + register + " $T" + reg_count++;
-                        store = "HI " + store_code + arith_val + " " + register;
+                        store = store_code + arith_val + " " + register;
                         the_expr[1] = register;
                         reg_count++;
                         codeList.add(store);
@@ -242,10 +238,10 @@ public class SimpleTableBuilder extends LittleBaseListener {
                     }
                     break;
             }
+            // There is a store at the end of every arithmetic operation
+            storeVars(ctx, register, op, leftHandSide);
 
         }
-        // There is a store at the end of every arithmetic operation
-        storeVars(ctx, register, op, leftHandSide);
     }// end assign_expr
 
     public String VarType() {
@@ -253,14 +249,13 @@ public class SimpleTableBuilder extends LittleBaseListener {
         String find = arith_val;
         String the_type = null;
 
-        System.out.println("a val "+ arith_val);
+        System.out.println("vartype is " + arith_val);
+        //if it is a literal
         if(isLit()){
             if(arith_val.contains(".")){
-                System.out.println("is float");
                 return "F ";
             }
             else{
-                System.out.println("is int");
                 return "I ";
             }
         }
@@ -298,10 +293,10 @@ public class SimpleTableBuilder extends LittleBaseListener {
         String store;
         op_code = ";STORE" + t;
 
+        System.out.println("op " + op);
         if (op == null) {
-//            store = op_code + ctx.expr().getText() + " " + register + "\n" +
-//                    op_code + register + " " + lhs;\
-                    store = op_code + ctx.expr().getText() + " " + register;
+            store = op_code + ctx.expr().getText() + " " + register + "\n" +
+                    op_code + register + " " + lhs;
             codeList.add(store);
         }
         else { // for end of arithmetic operations
