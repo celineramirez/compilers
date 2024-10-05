@@ -1,4 +1,4 @@
-A compiler built with ANTLR and Java to parse a toy imperative programming language called MICRO. See "Little.g4" for the syntax of this language.<br/>
+A compiler built with ANTLR and Java to parse a toy imperative programming language called MICRO. See "Little.g4" for the syntax of this language.<br/><br/>
 Input: a MICRO file<br/>
 Lexer - Converts MICRO code to tokens that are used for input in the parser.<br/>
 Parser - Parses input code. A context-free grammar is defined and used to generate code.<br/><br/>
